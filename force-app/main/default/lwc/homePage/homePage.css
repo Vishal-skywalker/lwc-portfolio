@@ -1,0 +1,76 @@
+.main-container {
+    width: 100%;
+    min-height: 100vh;
+    /* display: flex; */
+}
+
+/* 
+.left-container {
+    width: 30%;
+}
+
+.right-container {
+    wi
+} */
+
+.profile-photo-container {
+    position: absolute;
+    left: 50%;
+    padding: .5rem;
+    width: 25rem;
+    border: 3px solid white;
+}
+
+.profile-photo-container>img {
+    width: 100%;
+}
+
+.white {
+    color: white;
+}
+
+.black {
+    color: black;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.bg-black {
+    background-color: black;
+}
+
+.heading {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-top: 3.5rem;
+    letter-spacing: 0.3rem;
+}
+
+.heading>.white {
+    text-align: right;
+}
+
+.heading>.black {
+    text-align: left;
+}
+
+/* Styles for phones */
+@media screen and (max-width: 767px) {
+    .heading {
+        font-size: 1.5rem;
+    }
+
+    .profile-photo-container {
+        width: 15rem;
+    }
+}
+
+/* Styles for tablets */
+/* @media screen and (min-width: 768px) and (max-width: 1023px) {
+} */
+
+/* Styles for computers and larger screens */
+/* @media screen and (min-width: 1024px) {
+} */
