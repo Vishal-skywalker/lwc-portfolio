@@ -13,24 +13,29 @@ jobs:
       
       - name: Install Salesforce CLI
         run: |
-          echo Install Salesforce CLI
-          npm install sfdx-cli -g
+          # echo Install Salesforce CLI
+          # npm install sfdx-cli -g
           
       - name: Deploy to Salesforce
         run: |
-          echo "Authenticating with Salesforce..."
-          echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > privateKey.key
-          sfdx force:auth:jwt:grant -i ${{ secrets.SALESFORCE_CONSUMER_KEY }} -f privateKey.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME}} -d -a devjwt
+          # echo "Authenticating with Salesforce..."
+          # echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > privateKey.key
+          # sfdx force:auth:jwt:grant -i ${{ secrets.SALESFORCE_CONSUMER_KEY }} -f privateKey.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME}} -d -a devjwt
 
           # Get the latest commit hash on the main branch
           LATEST_COMMIT=$(git rev-parse HEAD)
 
           # Get the hash of the commit before the latest one on the main branch
-          PREVIOUS_COMMIT=$(git rev-parse HEAD^)
+          PREVIOUS_COMMIT=$(git rev-parse HEAD^ 2>/dev/null)
 
-          # Get list of changed files between the latest and previous commits
-          echo "Retrieving changed files..."
-          CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $LATEST_COMMIT)
+          if [ -z "$PREVIOUS_COMMIT" ]; then
+            echo "No previous commit found. Assuming the first commit."
+            CHANGED_FILES=$(git ls-tree --name-only -r $LATEST_COMMIT)
+          else
+            # Get list of changed files between the latest and previous commits
+            echo "Retrieving changed files..."
+            CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $LATEST_COMMIT)
+          fi
 
           # Generate manifest file
           echo '<?xml version="1.0" encoding="UTF-8"?>
@@ -47,6 +52,7 @@ jobs:
           </Package>' >> $MANIFEST_FILE
 
           echo "Manifest file created: $MANIFEST_FILE"
+          cat $MANIFEST_FILE
           
           # echo "Deploying to Salesforce..."
           # sfdx force:source:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} --sourcepath force-app/main/default --testlevel NoTestRun --loglevel debug
