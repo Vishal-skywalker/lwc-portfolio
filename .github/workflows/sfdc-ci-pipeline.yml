@@ -1,11 +1,11 @@
-name: GitHub Actions to add logs to test.txt file
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: GitHub Actions to deploy to org when ever code is merged in main 
+run-name: ${{ github.actor }} is running deployment to org using GitHub Actions 🚀
 on:
   push:
     branches: 
     - main
 jobs:
-  Write-push-details-on-test-txt:
+  Start-Deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -15,7 +15,7 @@ jobs:
       
       - name: Install Salesforce CLI
         run: |
-          echo Install Salesforce CLI
+          echo Install Salesforce CLI and sfdx-git-delta plugin
           npm install sfdx-cli -g
           echo "y" | sfdx plugins:install sfdx-git-delta
           
