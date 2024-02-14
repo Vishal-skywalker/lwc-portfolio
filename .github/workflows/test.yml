@@ -8,4 +8,27 @@ jobs:
   Write-push-details-on-test-txt:
     runs-on: ubuntu-latest
     steps:
-      - run: echo Running Write-push-details-on-test-txt on push from branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: Install Salesforce CLI
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+          mkdir sfdx
+          tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1
+          sudo ./sfdx/install
+          sfdx --version
+          
+      - name: Deploy to Salesforce
+        run: |
+          echo "Authenticating with Salesforce..."
+          echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > privateKey.key
+          sfdx force:auth:jwt:grant -i ${{ secrets.SALESFORCE_CONSUMER_KEY }} -f privateKey.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME}} -d -a devjwt
+          
+          echo "Deploying to Salesforce..."
+          cd force-app/main/default
+          sfdx force:source:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} --testlevel NoTestRun --loglevel debug
+          
+          # Check deployment status
+          DEPLOY_STATUS=$(sfdx force:source:deploy:report -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} | grep "Status")
+          echo "Deployment Status: $DEPLOY_STATUS"
