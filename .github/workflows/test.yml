@@ -13,11 +13,8 @@ jobs:
       
       - name: Install Salesforce CLI
         run: |
-          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-          mkdir sfdx
-          tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1
-          sudo ./sfdx/install
-          sfdx --version
+          echo Install Salesforce CLI
+          npm install sfdx-cli -g
           
       - name: Deploy to Salesforce
         run: |
