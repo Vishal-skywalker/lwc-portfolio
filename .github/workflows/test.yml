@@ -19,7 +19,6 @@ jobs:
       - name: Deploy to Salesforce
         run: |
           # Set the path to store the manifest file
-          MANIFEST_FILE="package.xml"
           echo "Authenticating with Salesforce..."
           echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > privateKey.key
           sfdx force:auth:jwt:grant -i ${{ secrets.SALESFORCE_CONSUMER_KEY }} -f privateKey.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME}} -d -a devjwt
@@ -32,14 +31,15 @@ jobs:
 
           if [ -z "$PREVIOUS_COMMIT" ]; then
             echo "No previous commit found. Assuming the first commit."
-            CHANGED_FILES=$(git ls-tree --name-only -r $LATEST_COMMIT)
+            CHANGED_FILES=$(git ls-tree --name-only -r $LATEST_COMMIT -- force-app/main/default)
           else
             # Get list of changed files between the latest and previous commits
             echo "Retrieving changed files..."
-            CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $LATEST_COMMIT)
+            CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $LATEST_COMMIT -- force-app/main/default)
           fi
 
           # Generate manifest file
+          MANIFEST_FILE="package.xml"
           echo '<?xml version="1.0" encoding="UTF-8"?>
           <Package xmlns="http://soap.sforce.com/2006/04/metadata">
             <types>' > $MANIFEST_FILE
@@ -54,11 +54,10 @@ jobs:
           </Package>' >> $MANIFEST_FILE
 
           echo "Manifest file created: $MANIFEST_FILE"
-          cat $MANIFEST_FILE
           
-          # echo "Deploying to Salesforce..."
-          # sfdx force:source:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} --sourcepath force-app/main/default --testlevel NoTestRun --loglevel debug
+          echo "Deploying to Salesforce..."
+          sfdx force:source:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} --sourcepath force-app/main/default --testlevel NoTestRun --loglevel debug
           
-          # # Check deployment status
-          # DEPLOY_STATUS=$(sfdx force:source:deploy:report -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} | grep "Status")
-          # echo "Deployment Status: $DEPLOY_STATUS"
+          # Check deployment status
+          DEPLOY_STATUS=$(sfdx force:source:deploy:report -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} | grep "Status")
+          echo "Deployment Status: $DEPLOY_STATUS"
