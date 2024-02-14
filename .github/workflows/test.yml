@@ -14,15 +14,15 @@ jobs:
       - name: Install Salesforce CLI
         run: |
           echo Install Salesforce CLI
-          # npm install sfdx-cli -g
+          npm install sfdx-cli -g
           
       - name: Deploy to Salesforce
         run: |
           # Set the path to store the manifest file
           MANIFEST_FILE="package.xml"
           echo "Authenticating with Salesforce..."
-          # echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > privateKey.key
-          # sfdx force:auth:jwt:grant -i ${{ secrets.SALESFORCE_CONSUMER_KEY }} -f privateKey.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME}} -d -a devjwt
+          echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > privateKey.key
+          sfdx force:auth:jwt:grant -i ${{ secrets.SALESFORCE_CONSUMER_KEY }} -f privateKey.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME}} -d -a devjwt
 
           # Get the latest commit hash on the main branch
           LATEST_COMMIT=$(git rev-parse HEAD)
