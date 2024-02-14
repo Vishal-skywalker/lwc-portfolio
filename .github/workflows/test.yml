@@ -15,7 +15,7 @@ jobs:
         run: |
           echo Install Salesforce CLI
           npm install sfdx-cli -g
-          sfdx plugins:install sfdx-git-packager -y
+          echo "y" | sfdx plugins:install sfdx-git-packager
           
       - name: Deploy to Salesforce
         run: |
