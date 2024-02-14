@@ -15,6 +15,7 @@ jobs:
         run: |
           echo Install Salesforce CLI
           npm install sfdx-cli -g
+          sfdx plugins:install sfdx-git-packager
           
       - name: Deploy to Salesforce
         run: |
@@ -23,7 +24,8 @@ jobs:
           sfdx force:auth:jwt:grant -i ${{ secrets.SALESFORCE_CONSUMER_KEY }} -f privateKey.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME}} -d -a devjwt
           
           echo "Deploying to Salesforce..."
-          sfdx force:source:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} --sourcepath force-app/main/default --testlevel NoTestRun --loglevel debug
+          sfdx git:package -d tempmanifest --targetref=origin/main -f
+          sfdx force:source:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} --sourcepath tempmanifest --testlevel NoTestRun --loglevel debug
           
           # Check deployment status
           DEPLOY_STATUS=$(sfdx force:source:deploy:report -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} | grep "Status")
