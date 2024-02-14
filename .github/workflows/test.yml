@@ -1,1 +1,11 @@
-
+name: GitHub Actions to add logs to test.txt file
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on:
+  push:
+    branches: 
+    - main
+jobs:
+  Write-push-details-on-test-txt:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo Running Write-push-details-on-test-txt on push from branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
