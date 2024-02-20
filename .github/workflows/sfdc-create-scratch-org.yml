@@ -1,4 +1,4 @@
-name: GitHub Actions to deploy to org when ever code is merged in main 
+name: GitHub Actions to create a new scratch org
 run-name: ${{ github.actor }} is running Create scartch org using GitHub Actions 🚀
 on:
   issues: 
