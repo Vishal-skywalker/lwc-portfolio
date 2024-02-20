@@ -8,6 +8,8 @@ jobs:
 
     if: github.event.issue.title == 'create scratch org'
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       # - name: Checkout
       #   uses: actions/checkout@v3
