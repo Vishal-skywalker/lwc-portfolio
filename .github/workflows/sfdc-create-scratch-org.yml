@@ -38,7 +38,7 @@ jobs:
       - name: Action
         run: |
             # echo ${{github.payload}}
-            data=${{github.payload}}
+            data=${{ github.payload }}
             # for key in "${!data[@]}"; do
             #   echo "Key: $key, Value: ${data[$key]}"
             #   done
