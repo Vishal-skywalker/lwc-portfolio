@@ -38,8 +38,4 @@ jobs:
       - name: Action
         run: |
             echo working on issue number ${{github.event.issue.number}}
-            node
-            const data = ${{github.event}};
-            console.log('Logging...');
-            console.log(data);
-
+            node -e "const data = ${{github.event}}; console.log('Logging...'); console.log(data);"
