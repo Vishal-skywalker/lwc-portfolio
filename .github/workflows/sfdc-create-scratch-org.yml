@@ -4,8 +4,9 @@ on:
   issues: 
     types: [opened]
 jobs:
-  add-comment:
+  create-scratch-org:
 
+    if: github.event.issue.title.toLowerCase() == 'create scratch org'
     runs-on: ubuntu-latest
     steps:
       # - name: Checkout
@@ -35,13 +36,11 @@ jobs:
       #     # Check deployment status
       #     DEPLOY_STATUS=$(sfdx force:source:deploy:report -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} | grep "Status")
       #     echo "Deployment Status: $DEPLOY_STATUS"
-      - name: Action
+      - name: Add comment
+        run: gh issue comment "$NUMBER" --body "$BODY"
         env:
-          JSON_DOC: ${{ toJSON(github.event.issue) }}
-          JSON_EVENT: ${{ toJSON(github.event) }}
-        run: |
-            echo working on issue number ${{github.event.issue.number}}
-            printf '%s\n' "$JSON_DOC" > foo.json
-            cat foo.json
-            printf '%s\n' "$JSON_EVENT" > foo2.json
-            cat foo2.json
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          BODY: >
+            Creating scartch org for "$NUMBER"
