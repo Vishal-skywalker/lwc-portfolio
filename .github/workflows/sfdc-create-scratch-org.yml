@@ -37,4 +37,4 @@ jobs:
       #     echo "Deployment Status: $DEPLOY_STATUS"
       - name: Action
         run: |
-            ${{github.event}}
+            echo ${{github.event}}
