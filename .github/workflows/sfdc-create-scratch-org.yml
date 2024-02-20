@@ -42,3 +42,4 @@ jobs:
             for key in "${!data[@]}"; do
               echo "Key: $key, Value: ${data[$key]}"
               done
+            echo $data[@]
