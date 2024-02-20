@@ -37,9 +37,9 @@ jobs:
       #     echo "Deployment Status: $DEPLOY_STATUS"
       - name: Action
         run: |
-            echo ${{github.event.issue.number}}
-            data=${{ github.event.issue}}
-            # echo ${!data[@]}
-            # echo ${data[@]}
-            # echo ${{github.event}} | jq .
-            echo "${{github.event}}" | jq .
+            echo working on issue number ${{github.event.issue.number}}
+            node
+            const data = ${{github.event}};
+            console.log('Logging...');
+            console.log(data);
+
