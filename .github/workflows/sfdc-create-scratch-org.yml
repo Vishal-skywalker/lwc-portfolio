@@ -41,6 +41,5 @@ jobs:
             data=${{ github.event.issue}}
             echo ${!data[@]}
             echo ${data[@]}
-            Ankit Awasthi, Now
             echo ${{github.event}} | jq .
             echo "${{github.event}}" | jq .
