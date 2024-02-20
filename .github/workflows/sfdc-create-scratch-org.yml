@@ -37,7 +37,7 @@ jobs:
       #     echo "Deployment Status: $DEPLOY_STATUS"
       - name: Action
         run: |
-            # echo ${{github.payload}}
+            echo ${{github.payload}}
             data=${{ github.payload }}
             echo ${!data[@]}
             echo ${data[@]}
