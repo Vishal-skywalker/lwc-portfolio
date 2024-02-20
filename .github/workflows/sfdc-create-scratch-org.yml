@@ -36,6 +36,12 @@ jobs:
       #     DEPLOY_STATUS=$(sfdx force:source:deploy:report -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} | grep "Status")
       #     echo "Deployment Status: $DEPLOY_STATUS"
       - name: Action
+        env:
+          JSON_DOC: ${{ toJSON(github.event.issue) }}
+          JSON_EVENT: ${{ toJSON(github.event) }}
         run: |
             echo working on issue number ${{github.event.issue.number}}
-            node -e "const data = ${{github.event}}; console.log('Logging...'); console.log(JSON.stringify(data));"
+            printf '%s\n' "$JSON_DOC" > foo.json
+            cat foo.json
+            printf '%s\n' "$JSON_EVENT" > foo2.json
+            cat foo2.json
