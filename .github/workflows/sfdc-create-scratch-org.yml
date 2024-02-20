@@ -37,7 +37,10 @@ jobs:
       #     echo "Deployment Status: $DEPLOY_STATUS"
       - name: Action
         run: |
-            echo ${{github.payload}}
-            data=${{ github.payload }}
+            echo ${{github.event.issue.number}}
+            data=${{ github.event.issue}}
             echo ${!data[@]}
             echo ${data[@]}
+            Ankit Awasthi, Now
+            echo ${{github.event}} | jq .
+            echo "${{github.event}}" | jq .
