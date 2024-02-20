@@ -37,4 +37,8 @@ jobs:
       #     echo "Deployment Status: $DEPLOY_STATUS"
       - name: Action
         run: |
-            echo ${{github.event}} | python -m json.tool
+            # echo ${{github.payload}}
+            data=${{github.payload}}
+            for key in "${!data[@]}"; do
+              echo "Key: $key, Value: ${data[$key]}"
+              done
