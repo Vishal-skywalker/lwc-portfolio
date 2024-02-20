@@ -6,7 +6,7 @@ on:
 jobs:
   create-scratch-org:
 
-    if: github.event.issue.title.toLowerCase() == 'create scratch org'
+    if: github.event.issue.title == 'create scratch org'
     runs-on: ubuntu-latest
     steps:
       # - name: Checkout
